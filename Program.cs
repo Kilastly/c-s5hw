@@ -55,6 +55,75 @@
 первую и последнюю строку массива.
 */
 
+// void InputMatrix(int[,] matrix)
+// {
+//     for(int i = 0; i < matrix.GetLength(0); i++)
+//     {
+//         for (int j = 0; j < matrix.GetLength(1); j++)
+//         {
+//             matrix[i, j] = new Random().Next(1, 101);
+//         }
+//     }
+// }
+
+// void PrintMatrix(int[,] matrix)
+// {
+//     for(int i = 0; i < matrix.GetLength(0); i++)
+//     {
+//         for (int j = 0; j < matrix.GetLength(1); j++)
+//         {
+//             Console.Write($"{matrix[i, j]} \t");
+//         }
+//         Console.WriteLine();
+//     }
+// }
+
+// int[,] ReplaseRow(int[,] matrix)
+// {
+
+//     int[,] resultMatrix = new int[matrix.GetLength(0), matrix.GetLength(1)]; 
+
+//     for(int i = 0; i < matrix.GetLength(0); i++)
+//     {
+//         for (int j = 0; j < matrix.GetLength(1); j++)
+//         {
+//             if(i == 0 || i == matrix.GetLength(0))
+//             {
+//                 if(i == 0)
+//                 resultMatrix[i,j] = matrix[matrix.GetLength(0)-1,j];
+
+//             }
+//             else
+//             if(i == matrix.GetLength(0)-1)
+//             {
+//                 resultMatrix[i,j] = matrix[0,j];
+//             }
+//             else
+//             resultMatrix[i,j] = matrix[i,j];
+//         }
+//     }
+//     return resultMatrix;
+// }
+
+
+// Console.Clear();
+// Console.Write("Введите размеры двумерного массива через запятую: ");
+// int[] size = Console.ReadLine()!.Split(',').Select(x => int.Parse(x)).ToArray();
+// int[,] matrix = new int[size[0], size[1]];
+// InputMatrix(matrix);
+// Console.WriteLine("Начальная матрица");
+// PrintMatrix(matrix);
+// int [,] resultMatrix = ReplaseRow(matrix);
+// Console.WriteLine("Конечная матрица");
+// PrintMatrix(resultMatrix);
+
+/*Задайте прямоугольный двумерный массив. 
+Напишите программу, которая будет находить
+строку с наименьшей суммой элементов.
+*/
+
+
+
 void InputMatrix(int[,] matrix)
 {
     for(int i = 0; i < matrix.GetLength(0); i++)
@@ -77,42 +146,53 @@ void PrintMatrix(int[,] matrix)
         Console.WriteLine();
     }
 }
-
-int[,] ReplaseRow(int[,] matrix)
+bool CheckSqer (int[] size)
 {
+    if (size[0] == size[1])
+    return true;
+    else 
+    return false;
+}
 
-    int[,] resultMatrix = new int[matrix.GetLength(0), matrix.GetLength(1)]; 
-    
-    for(int i = 0; i < matrix.GetLength(0); i++)
+int SumLine (int[,] matrix)
+{
+double minSum = 101*10; //умножаем максимальное значение заполнения матрицы на 10
+int minLineIndex = 0;
+int currentSum = 0;
+  for(int j = 0; j < matrix.GetLength(0); j++)
     {
-        for (int j = 0; j < matrix.GetLength(1); j++)
+        
+        for (int i = 0; i < matrix.GetLength(0); i++)
         {
-            if(i == 0 || i == matrix.GetLength(0))
-            {
-                if(i == 0)
-                resultMatrix[i,j] = matrix[matrix.GetLength(0)-1,j];
-                
-            }
-            else
-            if(i == matrix.GetLength(0)-1)
-            {
-                resultMatrix[i,j] = matrix[0,j];
-            }
-            else
-            resultMatrix[i,j] = matrix[i,j];
+        currentSum = currentSum + matrix[i,j];
+         
+        {
+        minSum = currentSum;
+        minLineIndex = j;
         }
-    }
-    return resultMatrix;
+        }
+    } 
+    return minLineIndex;   
 }
 
 
+
+
 Console.Clear();
-Console.Write("Введите размеры двумерного массива через запятую: ");
+Console.Write("Введите размеры квадратного массива через запятую: "); //Можно было задать одним числом, но так понятней что массив двумерный
 int[] size = Console.ReadLine()!.Split(',').Select(x => int.Parse(x)).ToArray();
+bool check = CheckSqer(size);
+if (check == false)
+{
+Console.Write("Вы ошиблись! Введите размеры квадратного массива через запятую: ");
+size = Console.ReadLine()!.Split(',').Select(x => int.Parse(x)).ToArray();
+}
+
 int[,] matrix = new int[size[0], size[1]];
 InputMatrix(matrix);
-Console.WriteLine("Начальная матрица");
+Console.WriteLine("Ваша матрица");
 PrintMatrix(matrix);
-int [,] resultMatrix = ReplaseRow(matrix);
-Console.WriteLine("Конечная матрица");
-PrintMatrix(resultMatrix);
+
+int result = SumLine(matrix);
+
+Console.WriteLine($"Строка с минимальной суммой {result}");
