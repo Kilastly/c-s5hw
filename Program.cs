@@ -122,13 +122,94 @@
 строку с наименьшей суммой элементов.
 */
 
-void InputMatrix(int[,] matrix)
+// void InputMatrix(int[,] matrix)
+// {
+//     for(int i = 0; i < matrix.GetLength(0); i++)
+//     {
+//         for (int j = 0; j < matrix.GetLength(1); j++)
+//         {
+//             matrix[i, j] = new Random().Next(1, 101);
+//         }
+//     }
+// }
+
+// void PrintMatrix(int[,] matrix)
+// {
+//     for(int i = 0; i < matrix.GetLength(0); i++)
+//     {
+//         for (int j = 0; j < matrix.GetLength(1); j++)
+//         {
+//             Console.Write($"{matrix[i, j]} \t");
+//         }
+//         Console.WriteLine();
+//     }
+// }
+// bool CheckSqer (int[] size)
+// {
+//     if (size[0] == size[1])
+//     return true;
+//     else 
+//     return false;
+// }
+
+// int SumLine (int[,] matrix)
+// {
+// int minSum = 101*matrix.GetLength(0); //умножаем максимальное значение заполнения матрицы на размер матрицы
+// int minLineIndex = -1;
+// int currentSum = 0;
+//   for(int i = 0; i< matrix.GetLength(0); i++)
+//     {
+//         for (int j = 0; j < matrix.GetLength(0); j++)
+//         {
+//             currentSum = currentSum + matrix[i,j];
+//         }
+//             if (currentSum < minSum) 
+//             {
+//                 minSum = currentSum;
+//                 minLineIndex = i;
+//             }
+//         currentSum = 0;
+//     }
+//     return minLineIndex;
+
+// }
+
+
+
+// Console.Clear();
+// Console.Write("Введите размеры квадратного массива через запятую: "); //Можно было задать одним числом, но так понятней что массив двумерный
+// int[] size = Console.ReadLine()!.Split(',').Select(x => int.Parse(x)).ToArray();
+// bool check = CheckSqer(size);
+// if (check == false)
+// {
+// Console.Write("Вы ошиблись! Введите размеры квадратного массива через запятую: ");
+// size = Console.ReadLine()!.Split(',').Select(x => int.Parse(x)).ToArray();
+// }
+
+// int[,] matrix = new int[size[0], size[1]];
+// InputMatrix(matrix);
+// Console.WriteLine("Ваша матрица");
+// PrintMatrix(matrix);
+
+// int result = SumLine(matrix);
+
+// Console.WriteLine($"Индекс строка с минимальной суммой {result}");
+
+/* Задача 4*(не обязательная): Задайте двумерный массив
+из целых чисел. Напишите программу, которая удалит
+строку и столбец, на пересечении которых расположен
+наименьший элемент массива. Под удалением
+понимается создание нового двумерного массива без
+строки и столбца */
+
+
+void InputMatrix(int[,] matrix, int elementLimit)
 {
-    for(int i = 0; i < matrix.GetLength(0); i++)
+        for(int i = 0; i < matrix.GetLength(0); i++)
     {
         for (int j = 0; j < matrix.GetLength(1); j++)
         {
-            matrix[i, j] = new Random().Next(1, 101);
+            matrix[i, j] = new Random().Next(1, elementLimit);
         }
     }
 }
@@ -144,61 +225,63 @@ void PrintMatrix(int[,] matrix)
         Console.WriteLine();
     }
 }
-bool CheckSqer (int[] size)
-{
-    if (size[0] == size[1])
-    return true;
-    else 
-    return false;
-}
 
-int SumLine (int[,] matrix)
+int [,] TransformMatrix (int [,] matrix, int elementLimit)
 {
-int minSum = 101*matrix.GetLength(0); //умножаем максимальное значение заполнения матрицы на размер матрицы
-int minLineIndex = -1;
-int currentSum = 0;
-  for(int i = 0; i< matrix.GetLength(0); i++)
+    int minElement = elementLimit;
+    int indexRow = -1;
+    int indexCol = -1;
+    int [,] newMatrix = new int[matrix.GetLength(0) -1, matrix.GetLength(0) -1];
+    int a = 0;
+    int b = 0;
+    
+ for(int i = 0; i < matrix.GetLength(0); i++)
     {
-        for (int j = 0; j < matrix.GetLength(0); j++)
+        for (int j = 0; j < matrix.GetLength(1); j++)
+        if (matrix[i,j] < minElement)
         {
-            currentSum = currentSum + matrix[i,j];
+            minElement = matrix[i,j];
+            indexRow = i;
+            indexCol = j;
         }
-            if (currentSum < minSum) 
-            {
-                minSum = currentSum;
-                minLineIndex = i;
-            }
-        currentSum = 0;
     }
-    return minLineIndex;
-
+    Console.WriteLine($"result {indexRow} , {indexCol}");
+ for(int i = 0; i < matrix.GetLength(0); i++)
+    {
+        
+    if (i != indexRow)
+    {
+        a = 0;
+        for (int j = 0; j < matrix.GetLength(1); j++)
+        {
+            if (j != indexCol)
+            {
+                newMatrix[a,b] = matrix[i,j];
+                Console.WriteLine($"b= {b}");
+                b++;
+            }
+        }
+     
+        Console.WriteLine($"a = {a}");
+        a++;   
+     
 }
-
-
+    } 
+    return newMatrix;
+}
 
 Console.Clear();
-Console.Write("Введите размеры квадратного массива через запятую: "); //Можно было задать одним числом, но так понятней что массив двумерный
+int elementLimit = 101;
+Console.Write("Введите размеры массива через запятую: "); 
 int[] size = Console.ReadLine()!.Split(',').Select(x => int.Parse(x)).ToArray();
-bool check = CheckSqer(size);
-if (check == false)
-{
-Console.Write("Вы ошиблись! Введите размеры квадратного массива через запятую: ");
-size = Console.ReadLine()!.Split(',').Select(x => int.Parse(x)).ToArray();
-}
-
 int[,] matrix = new int[size[0], size[1]];
-InputMatrix(matrix);
+int[,] newMatrix = new int[size[0]-1, size[1]-1];
+InputMatrix(matrix, elementLimit);
 Console.WriteLine("Ваша матрица");
 PrintMatrix(matrix);
+TransformMatrix(matrix, elementLimit);
+Console.WriteLine("Ваша новая матрица");
+PrintMatrix(newMatrix);
 
-int result = SumLine(matrix);
 
-Console.WriteLine($"Индекс строка с минимальной суммой {result}");
-
-/* Задача 4*(не обязательная): Задайте двумерный массив
-из целых чисел. Напишите программу, которая удалит
-строку и столбец, на пересечении которых расположен
-наименьший элемент массива. Под удалением
-понимается создание нового двумерного массива без
-строки и столбца */
 
