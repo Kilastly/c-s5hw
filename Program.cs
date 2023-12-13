@@ -122,8 +122,6 @@
 строку с наименьшей суммой элементов.
 */
 
-
-
 void InputMatrix(int[,] matrix)
 {
     for(int i = 0; i < matrix.GetLength(0); i++)
@@ -156,25 +154,25 @@ bool CheckSqer (int[] size)
 
 int SumLine (int[,] matrix)
 {
-double minSum = 101*10; //умножаем максимальное значение заполнения матрицы на 10
-int minLineIndex = 0;
+int minSum = 101*matrix.GetLength(0); //умножаем максимальное значение заполнения матрицы на размер матрицы
+int minLineIndex = -1;
 int currentSum = 0;
-  for(int j = 0; j < matrix.GetLength(0); j++)
+  for(int i = 0; i< matrix.GetLength(0); i++)
     {
-        
-        for (int i = 0; i < matrix.GetLength(0); i++)
+        for (int j = 0; j < matrix.GetLength(0); j++)
         {
-        currentSum = currentSum + matrix[i,j];
-         
-        {
-        minSum = currentSum;
-        minLineIndex = j;
+            currentSum = currentSum + matrix[i,j];
         }
-        }
-    } 
-    return minLineIndex;   
-}
+            if (currentSum < minSum) 
+            {
+                minSum = currentSum;
+                minLineIndex = i;
+            }
+        currentSum = 0;
+    }
+    return minLineIndex;
 
+}
 
 
 
@@ -195,4 +193,12 @@ PrintMatrix(matrix);
 
 int result = SumLine(matrix);
 
-Console.WriteLine($"Строка с минимальной суммой {result}");
+Console.WriteLine($"Индекс строка с минимальной суммой {result}");
+
+/* Задача 4*(не обязательная): Задайте двумерный массив
+из целых чисел. Напишите программу, которая удалит
+строку и столбец, на пересечении которых расположен
+наименьший элемент массива. Под удалением
+понимается создание нового двумерного массива без
+строки и столбца */
+
